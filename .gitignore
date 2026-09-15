@@ -1,0 +1,8 @@
+photos/
+cutouts/
+verify/*.png
+verify/*.jpg
+verify/*.txt
+verify/*.json
+node_modules/
+__pycache__/
