@@ -28,7 +28,7 @@ def _fit(v, ys):
 
 
 def build(src, matte, box, out, clean='left', lid_y=0, body_from=None, satmin=0.40,
-          rowsmooth=5, feather=1.4, base_round=0.0):
+          rowsmooth=5, feather=1.4, base_round=0.0, blend=0):
     im = Image.open(src).convert('RGB').crop(box)
     mt = Image.open(matte).convert('RGBA').crop(box)
     a = np.array(im).astype(np.float32); H, W, _ = a.shape
@@ -77,6 +77,7 @@ def build(src, matte, box, out, clean='left', lid_y=0, body_from=None, satmin=0.
     # the lid and straw come straight from the matte
     keep = ma.copy(); keep[lid_y:] = False
     out_a[keep] = 255
+    keep_full = ma.copy()
     for y in range(lid_y, y1 + 1):
         if not np.isfinite(half[y]) or half[y] < 8: continue
         ax = axis[y]; hw = half[y]
@@ -91,7 +92,13 @@ def build(src, matte, box, out, clean='left', lid_y=0, body_from=None, satmin=0.
         for x in range(max(lo, 0), min(hi, W - 1) + 1):
             r = min(int(round(abs(x - ax))), RMAX - 1)
             if not np.isfinite(row[r, 0]): continue
-            out_rgb[y, x] = np.clip(row[r], 0, 255).astype(np.uint8)
+            v = np.clip(row[r], 0, 255)
+            if blend and y < lid_y + blend and keep_full[y, x]:
+                # crossfade into the matte-kept lid rows: a hard handover leaves a
+                # visible step where the two blues differ by a shade
+                t = (y - lid_y) / float(blend)
+                v = v * t + a[y, x] * (1 - t)
+            out_rgb[y, x] = v.astype(np.uint8)
             out_a[y, x] = 255
     alpha = Image.fromarray(out_a).filter(ImageFilter.GaussianBlur(feather))
     res = Image.fromarray(out_rgb).convert('RGBA'); res.putalpha(alpha)
