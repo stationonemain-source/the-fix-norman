@@ -160,6 +160,7 @@ main>*{pointer-events:auto}
 .proof b{font-family:var(--disp);font-weight:400;font-size:clamp(56px,7vw,110px);line-height:.9}
 .proof b small{font-size:.5em;vertical-align:top}
 .proof .mono{opacity:.7}
+.proof-note{margin:14px 0 0;opacity:.55;position:relative;z-index:2}
 .quotes{list-style:none;margin:clamp(48px,6vw,88px) 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,44px);position:relative;z-index:2}
 .quote{padding:26px;background:#fff;border-radius:14px;box-shadow:0 20px 50px rgba(15,15,17,.08);will-change:transform,opacity}
 .quote p{margin:0 0 14px;font-size:18px;line-height:1.5}
