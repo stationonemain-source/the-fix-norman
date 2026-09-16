@@ -1,4 +1,4 @@
-/* The Fix Energy & Nutrition Lounge — drinks engine. Built 2026-09-15 on The Tower’s LOADOUT engine.
+/* The Fix Energy & Nutrition Lounge — drinks engine. Built 2026-09-15 by Station.Solutions.
    Five cutout cups, each one cut out of The Fix’s own photographs, drawn over the page, with the
    name BEHIND the cup, particles behind and in front, mouse tilt, idle bob, velocity streaks, code-driven 3D
    swipes between cups, and scroll-driven motion through every section below (pinned horizontal lineup,
@@ -392,7 +392,7 @@
     st.addEventListener('click', function (e) { if (moved > 6) { e.preventDefault(); e.stopPropagation(); } }, true);
     st.setAttribute('tabindex', '0');
     st.setAttribute('role', 'region');
-    st.setAttribute('aria-label', 'Photos from The Tower, row ' + (si + 1) + ' of 2, scroll sideways');
+    st.setAttribute('aria-label', 'Photos from The Fix, row ' + (si + 1) + ' of 2, scroll sideways');
   });
   /* the ends wrap, so neither arrow is ever a dead control */
   function step(d) { switchTo((curVis + d + N) % N, d); }
@@ -440,12 +440,10 @@
   }
   if (bomb) {
     var B = [
-      ['4.4 ★', 'GOOGLE', '#2BB3F3', '#04121B', 6, 12, 1.1, -14],
-      ['FIX', 'FAM', '#fff', '#111', 78, 4, 0.7, 10],
-      ['DAILY', 'FIX', '#F6E24B', '#111', 44, 14, 1.4, -6],
-      ['CAFFEINE', 'DEALER', '#FF5FA2', '#111', 2, 62, 0.9, 8],
-      ['THE', 'OG', '#7ED957', '#111', 62, 82, 1.2, -18],
-      ['SEVEN', 'DAYS', '#FF5A2B', '#111', 30, 90, 0.6, 14]
+      ['4.4 ★', 'GOOGLE', '#2BB3F3', '#04121B', 4, 6, 1.1, -14],
+      ['FIX', 'FAM', '#fff', '#111', 84, 3, 0.7, 10],
+      ['DAILY', 'FIX', '#F6E24B', '#111', 44, 12, 1.2, -6],
+      ['SEVEN', 'DAYS', '#FF5FA2', '#111', 24, 15, 0.8, 12]
     ];
     bomb.innerHTML = B.map(function (b) { return '<div class="bomb-it" style="position:absolute;left:' + b[4] + '%;top:' + b[5] + '%" data-speed="' + b[6] + '" data-rot="' + b[7] + '">' + stickerSVG(b[0], b[1], b[2], b[3]) + '</div>'; }).join('');
   }
@@ -464,7 +462,7 @@
       gsap.from($$('.fam-copy > *', f), { y: 40, opacity: 0, stagger: 0.08, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: f, start: 'top 70%', once: true } });
     });
 
-    /* 2b. SIT DOWN SIP UP — photo strips slide opposite ways with scroll; polaroid + storefront parallax; chips pop in */
+    /* 2b. THE LOUNGE — photo strips slide opposite ways with scroll; polaroid + storefront parallax; chips pop in */
     $$('.strip').forEach(function (st) {
       var dir = +st.getAttribute('data-dir') || -1, row = $('.strip-row', st);
       /* the strip is a real scroller now, so the page-scroll pan writes scrollLeft — and hands over
@@ -508,7 +506,7 @@
     var story = $('#story');
     $$('.bomb-it').forEach(function (b) {
       var sp = +b.getAttribute('data-speed'), rot = +b.getAttribute('data-rot');
-      gsap.fromTo(b, { y: 160 * sp, rotation: rot }, { y: -160 * sp, rotation: rot + (rot > 0 ? 24 : -24), ease: 'none', scrollTrigger: { trigger: story, start: 'top bottom', end: 'bottom top', scrub: true } });
+      gsap.fromTo(b, { y: 90 * sp, rotation: rot }, { y: -90 * sp, rotation: rot + (rot > 0 ? 24 : -24), ease: 'none', scrollTrigger: { trigger: story, start: 'top bottom', end: 'bottom top', scrub: true } });
     });
     $$('.quote').forEach(function (q, i) {
       gsap.from(q, { x: i % 2 ? 80 : -80, y: 30, opacity: 0, rotation: i % 2 ? 2 : -2, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: q, start: 'top 88%', once: true } });
