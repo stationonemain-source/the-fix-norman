@@ -23,31 +23,34 @@ dead link is the pitch.
   the `?v=` cache-busters), `verify/*.js` (harvesters, screenshots, `cupshots.js` per-drink, hit tests).
 - Preview: `.claude/launch.json` entry `the-fix` → `python -m http.server 8767` on `site/`.
 
-## The cups — v2, 2026-09-16 (Circle: "the hero cups are not clean")
+## The cups — v3, 2026-09-16 (Circle: "the cups are still not clean. You can tell")
 
-Every cup on the page is **cut out of The Fix's own photograph**. Nothing generated, nothing paid for.
-`runcuts.py` rebuilds all six from `photos/raw/` + `cutouts2/`; `export.py` writes `site/img`.
+v2 was **not clean** and was reported as clean: it was judged from thumbnails. At full size the Rainbow and
+Sunset repaints showed rectangular blocks, a seam and ragged edges. **Judge a cup at the size it is shown**
+(`verify/cupshots.js W H TAG` clicks through all five; crop the frame at 100%) — never from a contact sheet.
 
-1. **`cuts2.py` — BiRefNet (`birefnet-general-lite`) mattes, not u2net.** The v1 u2net mattes bit chunks out
-   of the cup sides, dropped every straw, and left soft edges; BiRefNet keeps the straw and the clear lid
-   with a crisp edge, and on **four of five photos it drops the hand by itself**. `birefnet-general` (full)
-   dies with "bad allocation" on this box — the matte is predicted on a 1400 px copy and resized back up,
-   applied to the full-resolution photo.
-2. **`repair.plain`** for pink, cinnamon, sprinkles, green: the photograph, matted. That is all.
-   The pink photo has a second straw standing in the holder behind the cup; `runcuts.py` keeps only the
-   largest connected piece so it does not float beside the lid.
-3. **`repair.dehand`** for the two clinked ombré teas (g08), which each have a hand on them. The v1 approach
-   repainted the whole body and looked painted. v2 repaints **only the half the hand is on, below the row
-   the hand starts** (25% and 35% of each cut); everything else is the untouched photograph.
-   - Skin detection by colour **failed** — a blown-out knuckle and a highlight on the plastic are the same
-     colour. Do not go back to it. The hand's extent is given by `hand=` and `occ_from=`.
-   - `u2net_human_seg` does not isolate a hand: it returns hand AND cup as one "person holding a thing".
-   - The repaint is the drink's own radial profile from the clean half, median-smoothed over ±6 rows.
-   - The light is one-sided, so a **luminance** gain measured just above the hand carries the brightness
-     across. A per-channel gain turned the red cup orange (G≈50, B≈36 — 20% there is a hue shift).
-   - Both joins are feathered, but only where the photo under the feather is already close in colour;
-     unguarded, the fade let a thumb-tip ghost through.
-   - `straighten()` stands both upright; they were photographed mid-clink.
+| Cup | Source | How |
+|---|---|---|
+| 01 Rainbow | g08 right cup | **GPT Image 2 edit** removed the hand (`gptedit.py --one right`), then BiRefNet matte + upright |
+| 02 Sunset | g08 left cup | **GPT Image 2 edit** removed the hand and sleeve (`gptedit.py --one left`), then matte + upright |
+| 03 Pink | g03 | BiRefNet matte of the photograph, loose straw removed, stood upright (it leaned 8°) |
+| 04 Cinnamon | g04 | BiRefNet matte of the photograph |
+| 05 Sprinkles | g09 | BiRefNet matte of the photograph |
+
+- **Rainbow and Sunset are their photo with the hands removed by an image model**, the same thing The Tower's
+  site did with Kling O1 (v4.1 there). The drink, colours, lid, striped straw, ice and ribbing all match
+  photo g08; the model rebuilt what the hand covered. Two edits, ~$0.16 on the OpenAI key. The other three
+  cups are untouched photographs.
+- Edit each cup **on its own crop**, padded to 2:3, with `--one`: editing both at once gives two cups whose
+  lids overlap, and splitting them clips one lid. The prompt names the cup by colour and says to remove any
+  second cup at the frame edge. `input_fidelity` is not supported on gpt-image-2 (400).
+- `finishedit.py sunset|rainbow` mattes and stands the cup up by fitting its own axis. **One cup per
+  process**: a second BiRefNet run in the same process dies with "bad allocation" on this box, and the
+  matte is predicted on a 1024 px copy.
+- Rejected, do not retry: repainting from the clean half (`repair.py::dehand` — kept for reference, it is
+  what shipped the blocky v2), skin-by-colour masks, u2net_human_seg as a hand mask.
+- The shakes have no straw, so they draw at 64% (phone 40%) of the stage instead of 74% (47%) to read the
+  same size as the teas.
 
 ## The design
 
@@ -96,14 +99,38 @@ now serves this box a bot check — do not try to get past it.
   (white slab letters, ENERGY AND NUTRITION in blue) is a different mark and is only in the photos.
   No vector exists yet; 500 px is enough for the web but not for print.
 
-## Gates passed 2026-09-16 (re-run after the cup and fact-check pass)
+## Audit 2026-09-16 — desktop 1920 + 1440, phone 360 / 390 / 430
+
+`verify/audit.js W H TAG [mobile]` walks the whole page in viewport steps and reports overflow, upscaled
+images and sub-12 px text; `verify/boardwalk.js` captures each stacking card settled; `verify/foothit.js`
+hit-tests the curtain footer at the page bottom (scrollIntoView cannot reach a fixed footer, so the generic
+hit test reports its links as blocked — that is the test, not the page).
+
+Desktop: the visit banner was a 1400 px crop of a green cup stretched to 1920 → now their interior photo at
+native 2016 px. Photo rows stopped short on wide screens and started at x=0 → they start on the page wrap
+and scale with the screen. The white rules above/below a photo row were the browser's focus ring on the
+scroller (it has tabindex) → no ring on click, a brand ring for keyboard. Stickers hung off the left edge
+and out of the bottom of the story at 1920 → four stickers in space that is empty at every width.
+Board card content now sits on the page wrap. **The photo rows' screen-reader label said "Photos from The
+Tower"** → fixed, and every Tower mention in public JS/CSS comments removed. The holidays line still
+leaned on the "ones still open" claim → "Holiday hours go up on their Instagram." Header subline 9 → 10.5 px,
+chips 11 → 12 px. Card titles no longer touch line to line. The menu-board thumbnail opens full size.
+
+Phone: the cup base slid behind the drink panel → smaller and higher. Headlines left "IT." and "ST." alone
+→ `text-wrap:balance`. The board numerals ran through the titles; then, moved under the copy, **the next
+card covered the copy before it could be read** → copy at the top of each card, numeral in the bottom
+corner (the part that is covered first). One sticker covered the heading and one hung off the edge → one,
+pinned inside. The drink arrows were squeezed to 27 px ovals → `flex:none`. Subline 7.5 → 9 px.
+
+## Gates passed 2026-09-16 (after the audit)
 
 - accesslint live audit: **0 violations**.
 - Console/page errors: **none**, desktop 1440×900 and phone 390×844 (Pixel UA, touch).
 - Hit test across the whole page: nothing paints over the copy, every link and button is reachable, and
   **no tap target under 24 px** (the nav links were 19 px tall and were padded).
 - Phone: `scrollWidth` 390, no horizontal overflow; page height 10,243 px.
-- Every drink screenshotted in place (`verify/cupshots.js`). Cups 435 KB for all five.
+- Every drink screenshotted in place at 1920, 390 and 360 (`verify/cupshots.js`) and inspected at 100%.
+- No horizontal overflow at 360, 390, 430, 1440, 1920; no tap target under 24 px; no console errors.
 
 ## Not done / next
 

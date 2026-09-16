@@ -1,5 +1,5 @@
-/* The Fix Energy & Nutrition Lounge — Norman, OK. Built 2026-09-15 on The Tower’s engine,
-   reskinned to The Fix’s own palette: black lounge, sign blue, menu-board yellow, wall neon pink. */
+/* The Fix Energy & Nutrition Lounge — Norman, OK. Built 2026-09-15 by Station.Solutions,
+   in The Fix’s own palette: black lounge, sign blue, menu-board yellow, wall neon pink. */
 :root{
   --black:#000; --ink:#0F0F11; --ink-2:#1A1A1E; --bone:#F4EFE8; --bone-2:#E8E1D6;
   --line:rgba(244,239,232,.14); --line-ink:rgba(15,15,17,.14);
@@ -46,7 +46,7 @@ main>*{pointer-events:auto}
 .mark{width:40px;height:40px;flex:none;display:block;border-radius:50%;box-shadow:0 0 0 1px rgba(244,239,232,.16)}
 .lockup-text{display:flex;flex-direction:column;line-height:1}
 .lockup-text b{font-family:var(--wordmark);font-weight:400;font-size:27px;line-height:.9;letter-spacing:.02em;text-transform:uppercase}
-.lockup-text small{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.75;margin-top:3px;white-space:nowrap}
+.lockup-text small{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.8;margin-top:3px;white-space:nowrap}
 .nav{display:flex;gap:28px}
 .nav a{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;opacity:.8;position:relative;display:inline-block;padding:7px 2px}
 .nav a::after{content:"";position:absolute;left:2px;right:2px;bottom:1px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .3s}
@@ -79,8 +79,11 @@ main>*{pointer-events:auto}
 .slot.is-vis{visibility:visible;opacity:1}
 .slot canvas{position:absolute;inset:0;width:100%;height:100%}
 .slot .poster{position:absolute;top:50%;left:50%;height:74%;width:auto;max-width:none;translate:-50% -50%;filter:drop-shadow(0 30px 50px rgba(0,0,0,.55))}
+/* the two shakes have no straw, so at the same height their cups read a size larger than the teas */
+.slot[data-i="3"] .poster,.slot[data-i="4"] .poster{height:64%;top:52%}
 @media (max-width:820px){
-.slot .poster{height:52%;top:53%}}  /* fit by height, centred — matches how the canvas draws the frames */
+.slot .poster{height:47%;top:47.5%}
+.slot[data-i="3"] .poster,.slot[data-i="4"] .poster{height:40%;top:49%}}  /* fit by height, centred — matches how the canvas draws the frames */
 .slot canvas{opacity:0}
 .slot.is-live canvas{opacity:1}
 .slot.is-live .poster{opacity:0}
@@ -117,7 +120,7 @@ main>*{pointer-events:auto}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 .selector{position:absolute;z-index:8;left:0;right:0;bottom:calc(28px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:center;gap:22px;padding:0 var(--gutter)}
-.arrow{width:46px;height:46px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;color:var(--bone);transition:border-color .3s,background .3s,color .3s,transform .3s}
+.arrow{flex:none;width:46px;height:46px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;color:var(--bone);transition:border-color .3s,background .3s,color .3s,transform .3s}
 .arrow svg{width:18px;height:18px}
 .arrow:hover{border-color:var(--bone);background:var(--bone);color:var(--ink);transform:scale(1.08)}
 .counter{display:flex;gap:8px;font-size:13px;min-width:74px;justify-content:center}
@@ -125,7 +128,7 @@ main>*{pointer-events:auto}
 #cur{display:inline-block;min-width:2ch;text-align:right}
 .dchips{display:flex;gap:8px;min-width:0;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;max-width:min(60vw,720px);padding:2px}
 .dchips::-webkit-scrollbar{display:none}
-.dchip{flex:none;padding:9px 15px;border-radius:999px;border:1px solid var(--line);font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;color:var(--bone);opacity:.7;transition:opacity .25s,border-color .25s,background .25s,color .25s}
+.dchip{flex:none;padding:9px 15px;border-radius:999px;border:1px solid var(--line);font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;color:var(--bone);opacity:.78;transition:opacity .25s,border-color .25s,background .25s,color .25s}
 .dchip:hover{opacity:1;border-color:var(--bone)}
 .dchip.is-on{opacity:1;background:var(--accent);border-color:var(--accent);color:#000}
 .dots{display:flex;gap:6px}
@@ -152,7 +155,7 @@ main>*{pointer-events:auto}
 /* ---------- story ---------- */
 .story{position:relative;background:var(--bone);color:var(--ink);padding:clamp(80px,10vw,150px) 0;overflow:hidden}
 .kicker{display:inline-block;margin-bottom:18px;opacity:.7}
-.h-display{margin:0;font-family:var(--disp);font-weight:400;text-transform:uppercase;line-height:.86;letter-spacing:-.005em;font-size:clamp(52px,9.2vw,150px)}
+.h-display{margin:0;text-wrap:balance;font-family:var(--disp);font-weight:400;text-transform:uppercase;line-height:.86;letter-spacing:-.005em;font-size:clamp(52px,9.2vw,150px)}
 .h-display .w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.06em;margin-bottom:-.06em}
 .h-display .w>span{display:inline-block;will-change:transform}
 .lede{font-size:clamp(17px,1.6vw,21px);line-height:1.5;margin:22px 0 0;max-width:56ch;opacity:.9}
@@ -181,16 +184,18 @@ main>*{pointer-events:auto}
 .sipup-head .h-display .w{overflow:visible;padding:0 .06em}
 .sipup-head .h-display{font-family:var(--script);font-weight:700;text-transform:none;font-size:clamp(60px,10.5vw,180px);line-height:.95;letter-spacing:0;color:#EAF7FF;text-shadow:0 0 6px rgba(43,179,243,.95),0 0 22px rgba(43,179,243,.7),0 0 54px rgba(255,95,162,.45)}
 
-/* ---------- sit down sip up: parallax photo strips ---------- */
+/* ---------- the lounge: parallax photo strips ---------- */
 .sipup{background:var(--black);color:var(--bone);padding:clamp(80px,10vw,150px) 0 clamp(40px,5vw,72px);overflow:hidden}
 .sipup-head{margin-bottom:clamp(28px,4vw,56px)}
 /* draggable / swipeable: a native horizontal scroller, with the scroll-linked pan yielding on first touch */
 .strip{overflow-x:auto;overflow-y:hidden;padding:10px 0;cursor:grab;scrollbar-width:none;-ms-overflow-style:none;overscroll-behavior-x:contain}
 .strip::-webkit-scrollbar{display:none}
 .strip.is-drag{cursor:grabbing}
+.strip:focus{outline:none}
+.strip:focus-visible{outline:2px solid var(--brand);outline-offset:-2px}
 .strip img{user-select:none;-webkit-user-drag:none}
-.strip-row{display:flex;gap:14px;width:max-content}
-.strip img{height:clamp(200px,30vh,360px);width:auto;border-radius:12px;flex:none}
+.strip-row{display:flex;gap:14px;width:max-content;padding-inline:max(var(--gutter), calc((100vw - 1360px) / 2))}
+.strip img{height:clamp(200px,min(24vw,42vh),460px);width:auto;border-radius:12px;flex:none}
 
 .sipup-note{margin:26px auto 0;width:min(1360px,100% - 2*var(--gutter));opacity:.72}
 .polaroid{margin:0 0 26px;padding:12px 12px 14px;background:#fff;border-radius:6px;box-shadow:0 24px 60px rgba(15,15,17,.18);width:min(320px,80%);will-change:transform}
@@ -202,9 +207,11 @@ main>*{pointer-events:auto}
 .chip{font-family:var(--disp);font-weight:400;text-transform:uppercase;font-size:clamp(26px,3.2vw,52px);line-height:1;padding:14px 20px 12px;border:1px solid var(--line);border-radius:999px;color:var(--bone);transition:background .3s,color .3s;will-change:transform,opacity}
 .chip:hover{background:var(--c);color:#000}
 .chip-photo{padding:0;border:0;width:clamp(84px,9vw,140px);height:clamp(84px,9vw,140px);border-radius:16px;overflow:hidden;background:#fff}
-.chip-photo img{width:100%;height:100%;object-fit:cover}
+.chip-photo a{display:block;width:100%;height:100%}
+.chip-photo img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.chip-photo a:hover img{transform:scale(1.06)}
 .visit-photo{position:relative;height:clamp(320px,62vh,640px);overflow:hidden;margin-bottom:clamp(48px,6vw,96px)}
-.visit-photo img{position:absolute;left:0;top:-12%;width:100%;height:124%;object-fit:cover;will-change:transform}
+.visit-photo img{position:absolute;left:0;top:-12%;width:100%;height:124%;object-fit:cover;object-position:50% 58%;will-change:transform}
 .visit-photo-tag{position:absolute;left:var(--gutter);bottom:22px;padding:10px 14px;background:rgba(0,0,0,.55);color:var(--bone);border-radius:999px}
 .visit{padding-top:0}
 
@@ -212,15 +219,15 @@ main>*{pointer-events:auto}
 .board{background:var(--black);color:var(--bone);padding:clamp(80px,10vw,150px) 0 0}
 .board .sec-head{padding-bottom:clamp(36px,5vw,64px)}
 .stack{position:relative}
-.family{position:sticky;top:var(--head-h);height:calc(100vh - var(--head-h));height:calc(100svh - var(--head-h));display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:6vw;padding:0 var(--gutter);background:var(--ink);border-top:1px solid var(--line);border-radius:28px 28px 0 0;overflow:hidden;will-change:transform;transform-origin:50% 0}
+.family{position:sticky;top:var(--head-h);height:calc(100vh - var(--head-h));height:calc(100svh - var(--head-h));display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:6vw;padding:0 max(var(--gutter), calc((100vw - 1360px) / 2));background:var(--ink);border-top:1px solid var(--line);border-radius:28px 28px 0 0;overflow:hidden;will-change:transform;transform-origin:50% 0}
 .family::after{content:"";position:absolute;inset:0;background:#000;opacity:var(--dim,0);pointer-events:none;z-index:3}
 .family::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 78% 50%,var(--c) 0%,rgba(0,0,0,0) 70%);opacity:.45;pointer-events:none}
 .family:nth-child(2){background:#141418}.family:nth-child(3){background:#191920}.family:nth-child(4){background:#1e1e26}
 .fam-n{position:relative;font-family:var(--disp);font-weight:400;font-size:clamp(160px,30vw,520px);line-height:.8;color:transparent;-webkit-text-stroke:2px var(--c);justify-self:end;will-change:transform}
-.fam-copy{position:relative;max-width:34ch}
+.fam-copy{position:relative;max-width:40ch}
 .fam-copy .mono{opacity:.6;display:block;margin-bottom:22px}
-.family h3{margin:0 0 16px;font-family:var(--disp);font-weight:400;text-transform:uppercase;font-size:clamp(56px,8vw,132px);line-height:.86}
-.family p{margin:0;font-size:clamp(17px,1.5vw,21px);opacity:.85}
+.family h3{margin:0 0 18px;text-wrap:balance;font-family:var(--disp);font-weight:400;text-transform:uppercase;font-size:clamp(56px,8vw,132px);line-height:.94}
+.family p{margin:0;font-size:clamp(17px,1.4vw,23px);line-height:1.5;opacity:.85}
 .board-note{margin:0;padding:clamp(28px,4vw,48px) 0;opacity:.7;max-width:60ch;position:relative;background:var(--black)}
 
 /* ---------- visit ---------- */
@@ -259,7 +266,7 @@ main>*{pointer-events:auto}
 .foot-grid{display:grid;grid-template-columns:1.4fr 1fr auto;gap:32px;align-items:start}
 .foot-lockup{display:flex;gap:14px;align-items:center}
 .foot-lockup b{display:block;font-family:var(--wordmark);font-weight:400;font-size:34px;text-transform:uppercase;line-height:.9;letter-spacing:.02em}
-.foot-lockup span{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.7}
+.foot-lockup span{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;opacity:.7}
 /* the rule above is for the subline; the wordmark inside <b> keeps its own face */
 .foot-lockup b .fx-word{font:inherit;letter-spacing:inherit;opacity:1}
 .foot address{font-style:normal;line-height:1.9;opacity:.85}
@@ -296,21 +303,24 @@ main>*{pointer-events:auto}
   .quotes{grid-template-columns:1fr}
   .huds{width:min(34vw,320px)}
   .family{grid-template-columns:1fr}
-  .fam-n{position:absolute;right:var(--gutter);top:50%;translate:0 -50%;font-size:clamp(160px,40vw,420px);opacity:.5}
+  /* the next card slides up over the BOTTOM of this one, so the copy lives at the top and the
+     decorative numeral takes the bottom corner, which is covered first */
+  .family{align-items:start;padding-top:clamp(44px,9vh,96px)}
+  .fam-n{position:absolute;right:var(--gutter);top:auto;bottom:clamp(20px,5vh,56px);translate:none;font-size:clamp(150px,34vw,360px);opacity:.34}
 }
 @media (max-width:820px){
   /* phones: the chips take the whole row between the arrows. The 01/05 counter goes — the named
      buttons already say which drink you are on, and its width was squeezing long names out of view. */
   .counter{display:none}
   .dchips{flex:1 1 auto;max-width:none}
-  .dchip{padding:9px 13px;font-size:10.5px}
+  .dchip{padding:10px 14px;font-size:11.5px}
 
   :root{--head-h:64px}
   .nav{display:none}
   .order{padding:9px 13px;font-size:12px}
   .order b{display:none}
   .lockup-text b{font-size:23px}
-  .lockup-text small{font-size:7.5px;letter-spacing:.14em}
+  .lockup-text small{font-size:9px;letter-spacing:.12em}
   .mark{width:34px;height:34px}
   .eyebrow{top:calc(var(--head-h) + 10px)}
   .eyebrow span:last-child,.eyebrow .sep{display:none}
@@ -329,9 +339,10 @@ main>*{pointer-events:auto}
   .proof{grid-template-columns:repeat(2,1fr)}
   .proof li:nth-child(3){border-left:0;padding-left:0}
   .bomb .sticker{width:84px;height:84px}
-  .bomb-it:nth-child(1),.bomb-it:nth-child(4){display:none}
+  .bomb-it:nth-child(1),.bomb-it:nth-child(3),.bomb-it:nth-child(4){display:none}
+  .bomb-it:nth-child(2){left:auto !important;right:10px}
   .family{padding:0 var(--gutter);border-radius:20px 20px 0 0}
-  .fam-n{font-size:52vw}
+  .fam-n{font-size:44vw}
   .ambassador{grid-template-columns:1fr}
   .foot-grid{grid-template-columns:1fr}
   .foot-word{font-size:22vw}

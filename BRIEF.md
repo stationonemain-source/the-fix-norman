@@ -86,8 +86,8 @@ kat's review, and the page attributes it to the reviews rather than to the cup i
 
 | Slot | Name on the page | The photograph | What it shows |
 |---|---|---|---|
-| 01 | Rainbow | g08 (right cup) | layered blue → green → yellow tea, flat lid, straw |
-| 02 | Sunset | g08 (left cup) | layered red → orange tea, flat lid, straw |
+| 01 | Rainbow | g08 (right cup), hand removed by an image edit | layered blue → green → yellow tea, flat lid, straw |
+| 02 | Sunset | g08 (left cup), hand removed by an image edit | layered red → orange tea, flat lid, straw |
 | 03 | Pink | g03 | pink tea on their counter, "the fix ♡" written on the cup in marker |
 | 04 | Cinnamon | g04 | cream protein shake flecked brown, full The Fix sticker on the cup |
 | 05 | Sprinkles | g09 | purple shake under a dome lid, rainbow sprinkles, in front of the neon |
@@ -141,3 +141,6 @@ Re-verified today, first-party where possible:
 11. Board card 02 now carries "NSF Certified for Sport", which is on their board.
 12. Share card: `og:image` was a transparent cutout on a relative path; now an absolute URL to their
     clinked-teas photo, plus `og:url` and a large-image card.
+
+13. (audit) The holidays line "They have a habit of being the ones still open" rested on the same false
+    "only club still open" claim — now "Holiday hours go up on their Instagram."

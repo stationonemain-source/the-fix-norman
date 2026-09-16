@@ -7,3 +7,4 @@ verify/*.json
 node_modules/
 __pycache__/
 cutouts2/
+edits/
