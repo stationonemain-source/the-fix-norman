@@ -43,6 +43,7 @@ def cut(src, out):
 
 # one cup per process: two BiRefNet runs in one process exhaust this box's memory
 JOBS = {'sunset': ('edits/one_left.png', 'cutouts/f_sunset.png'),
-        'rainbow': ('edits/one_right.png', 'cutouts/f_rainbow.png')}
+        'rainbow': ('edits/one_right.png', 'cutouts/f_rainbow.png'),
+        'sprinkle': ('edits/one_sprinkle.png', 'cutouts/f_sprinkle.png')}
 for name in (sys.argv[1:] or ['sunset']):
     cut(*JOBS[name])

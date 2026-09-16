@@ -35,7 +35,7 @@ Sunset repaints showed rectangular blocks, a seam and ragged edges. **Judge a cu
 | 02 Sunset | g08 left cup | **GPT Image 2 edit** removed the hand and sleeve (`gptedit.py --one left`), then matte + upright |
 | 03 Pink | g03 | BiRefNet matte of the photograph, loose straw removed, stood upright (it leaned 8°) |
 | 04 Cinnamon | g04 | BiRefNet matte of the photograph |
-| 05 Sprinkles | g09 | BiRefNet matte of the photograph |
+| 05 Sprinkles | g09 | **GPT Image 2 edit** removed the hand, then matte, straight sides, level |
 
 - **Rainbow and Sunset are their photo with the hands removed by an image model**, the same thing The Tower's
   site did with Kling O1 (v4.1 there). The drink, colours, lid, striped straw, ice and ribbing all match
@@ -49,13 +49,20 @@ Sunset repaints showed rectangular blocks, a seam and ragged edges. **Judge a cu
   matte is predicted on a 1024 px copy.
 - Rejected, do not retry: repainting from the clean half (`repair.py::dehand` — kept for reference, it is
   what shipped the blocky v2), skin-by-colour masks, u2net_human_seg as a hand mask.
-- **The dent (Circle, 2026-09-16).** The 32 oz cups step inward where the ribbed base starts; matted and stood
-  upright, that step read as a dent on one side of Rainbow. `smoothside.py SRC DST` rebuilds the outline under
-  the lid: each side a robust quadratic fitted to the real edge, blended in over 90 rows so the join under the
-  lid has no step, and a base ellipse tangent to the sides. Run it on `cutouts/f_{rainbow,sunset}.bak.png`
-  (the untouched cutouts). Measured after: sides move at most 1 px per row, worst kink 1.5 px. The same
-  check on the other cups flags only the lid rim, which is the real shape. A first version moved only the
-  sides and left a corner at the base and a grey hairline — check the base at 200% after any outline edit.
+- **Cup outlines (Circle, 2026-09-16: "it's a cup, it doesn't curve anywhere").** Every hero cup now goes
+  through `straightcup.py SRC DST [RIM_FRAC]` then `level.py DST [RIM_FRAC]`, from the untouched cutouts
+  `cutouts/f_{rainbow,sunset,pink,shake}.bak.png` and `f_sprinkle.edit.bak.png`:
+  - each side is ONE straight line fitted to the real edge under the lid rim;
+  - the cup ends on the last full-width row above the rounded heel, with a flat bottom (a 3.5% arc for
+    perspective, meeting the sides at a corner). The heel is dropped, not rebuilt: stretching it smeared the
+    texture and mirroring it drew a visible reflection on Cinnamon and Sprinkles. Cups lose 3-6% height;
+  - `level.py` rotates until both sides taper equally (Sprinkles leaned 2.4 deg, the rest under 1).
+  Measured after: every side within 0.6 px of a straight line at display size, lean under 0.15 deg.
+- **Do not reuse `smoothside` (deleted).** It fitted the sides as curves with a rounded base and made the
+  Sunset taper to a point. Circle's words for it are in the session; a cup is a frustum.
+- Sprinkles is now also an image edit (`gptedit.py --src photos/raw/g09_hi.jpg --box 256,1067,966,2048`):
+  the hand in g09 had bitten the bottom-left of the cup away. Sticker text checked against the photo.
+- Cup `<img>` URLs carry `?v=` like css/js, so a phone that has seen an old cup gets the new one.
 - The shakes have no straw, so they draw at 64% (phone 40%) of the stage instead of 74% (47%) to read the
   same size as the teas.
 

@@ -25,6 +25,8 @@ ap.add_argument('--quality', default='high')
 ap.add_argument('--fidelity', default='')
 ap.add_argument('--dry-run', action='store_true')
 ap.add_argument('--one', choices=['left', 'right'], help='edit a single cup: crop it from g08, pad to 2:3, portrait output')
+ap.add_argument('--box', help='x0,y0,x1,y1 crop of --src for a single-cup edit (use with --what)')
+ap.add_argument('--what', help='how to name the cup in the prompt, e.g. "a purple and white milkshake under a clear dome lid"')
 a = ap.parse_args()
 
 cfg = json.loads((pathlib.Path.home() / '.station' / 'secrets' / 'openai.json').read_text(encoding='utf-8'))
@@ -33,18 +35,22 @@ model = cfg.get('image_model', 'gpt-image-2')
 size = '1024x1024'
 prompt = PROMPT
 src_path = a.src
-if a.one:
+if a.one or a.box:
     from PIL import Image
     im = Image.open(a.src).convert('RGB')
-    box = (0, 0, 560, im.size[1]) if a.one == 'left' else (490, 0, im.size[0], im.size[1])
+    if a.box:
+        box = tuple(int(v) for v in a.box.split(','))
+    else:
+        box = (0, 0, 560, im.size[1]) if a.one == 'left' else (490, 0, im.size[0], im.size[1])
     crop = im.crop(box)
-    H = 1150; W = int(H * 2 / 3)
+    H = max(1150, int(crop.size[1] * 1.08)); W = int(H * 2 / 3)
+    if crop.size[0] > W: W = int(crop.size[0] * 1.08); H = int(W * 3 / 2)
     canvas = Image.new('RGB', (W, H), (250, 250, 250))
     canvas.paste(crop, ((W - crop.size[0]) // 2, (H - crop.size[1]) // 2))
-    src_path = 'edits/_in_%s.png' % a.one
+    src_path = 'edits/_in_%s.png' % (a.one or 'box')
     canvas.save(src_path)
     size = '1024x1536'
-    what = ('the RED cup that fades down to orange' if a.one == 'left'
+    what = a.what or ('the RED cup that fades down to orange' if a.one == 'left'
             else 'the BLUE cup that fades down through green to yellow')
     prompt = ("Photo edit. This photo shows " + what + " held by a hand. Remove the hand, every finger, "
               "the painted nails and any sleeve completely, and remove any part of a second cup, lid or straw "
@@ -54,6 +60,16 @@ if a.one:
               "that part so it matches the rest of the same cup, with straight tapered sides and a rounded "
               "base. Show the whole cup, nothing cut off. Nothing holds it. Background: plain, even, pure "
               "white. Do not add, restyle or re-colour anything. Photorealistic, same lighting.")
+    if a.box:
+        prompt = ("Photo edit. This photo shows " + what + " held by a hand in front of a neon sign. "
+                  "Remove the hand and every finger completely. Keep this one cup exactly as it is: the same "
+                  "clear dome lid with the rainbow sprinkles on top, the same cream shake, the same purple "
+                  "streaks inside the cup, the same round black sticker with its exact white text "
+                  "(@thefixnorman, THE FIX, ENERGY & NUTRITION, 2100 W Lindsey Norman, OK), the same angle "
+                  "and lighting. Where the hand covered the cup, rebuild that part to match the rest of the "
+                  "same cup. A plastic cup has straight tapered sides and a flat bottom: no curve in the "
+                  "sides. Show the whole cup, nothing cut off. Nothing holds it. Background: plain, even, "
+                  "pure white, no sign. Do not add, restyle, re-colour or re-letter anything. Photorealistic.")
 if a.dry_run:
     print('DRY RUN', model, src_path, size, a.quality, a.out); sys.exit(0)
 data = {'model': model, 'prompt': prompt, 'size': size, 'quality': a.quality, 'n': '1'}
