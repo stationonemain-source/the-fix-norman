@@ -8,6 +8,8 @@
   --accent:#35A7FF; --accent-2:#8AD1FF;
   --disp:"Anton","Impact","Arial Narrow",sans-serif;
   --brand-face:"Archivo Black","Arial Black",sans-serif;
+  /* the logo's wordmark: tall condensed caps, one colour per letter */
+  --wordmark:"Bebas Neue","Anton","Arial Narrow",sans-serif;
   --script:"Caveat","Segoe Script",cursive;
   --mono:"Space Mono",ui-monospace,Menlo,monospace;
   --body:"Manrope","Helvetica Neue",Arial,sans-serif;
@@ -41,10 +43,9 @@ main>*{pointer-events:auto}
 .top.on-light::before{background:linear-gradient(180deg,rgba(244,239,232,.88) 0%,rgba(244,239,232,.62) 55%,rgba(244,239,232,0) 100%)}
 .top.on-light{color:var(--ink)}
 .lockup{display:flex;align-items:center;gap:12px;text-decoration:none}
-.mark{width:32px;height:32px;flex:none;color:var(--brand);display:block}
-.mark svg{width:100%;height:100%;display:block}
+.mark{width:40px;height:40px;flex:none;display:block;border-radius:50%;box-shadow:0 0 0 1px rgba(244,239,232,.16)}
 .lockup-text{display:flex;flex-direction:column;line-height:1}
-.lockup-text b{font-family:var(--brand-face);font-size:20px;letter-spacing:.02em;text-transform:uppercase}
+.lockup-text b{font-family:var(--wordmark);font-weight:400;font-size:27px;line-height:.9;letter-spacing:.02em;text-transform:uppercase}
 .lockup-text small{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.75;margin-top:3px;white-space:nowrap}
 .nav{display:flex;gap:28px}
 .nav a{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;opacity:.8;position:relative;display:inline-block;padding:7px 2px}
@@ -56,6 +57,9 @@ main>*{pointer-events:auto}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,.35)}70%{box-shadow:0 0 0 8px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
 .order:hover{background:var(--bone);color:var(--ink)}
 .top.on-light .order:hover{background:var(--ink);color:var(--bone)}
+
+.fx-word{white-space:nowrap}
+.fx-word i{font-style:normal;color:var(--lc)}
 
 /* ---------- the film / stage ---------- */
 .film{position:relative;height:100vh;background:var(--black)}
@@ -251,11 +255,13 @@ main>*{pointer-events:auto}
 /* ---------- footer (curtain) ---------- */
 .foot{position:fixed;left:0;right:0;bottom:0;z-index:0;background:var(--black);color:var(--bone);padding:clamp(48px,6vw,90px) 0 32px;overflow:hidden}
 .foot-word{margin:0 0 clamp(24px,4vw,56px);font-family:var(--disp);font-weight:400;text-transform:uppercase;font-size:clamp(88px,18.5vw,300px);line-height:.78;letter-spacing:-.01em;color:var(--bone);will-change:transform;white-space:nowrap}
-.foot-word em{font-style:normal;color:var(--accent)}
+.foot-word{font-family:var(--wordmark);letter-spacing:.01em}
 .foot-grid{display:grid;grid-template-columns:1.4fr 1fr auto;gap:32px;align-items:start}
 .foot-lockup{display:flex;gap:14px;align-items:center}
-.foot-lockup b{display:block;font-family:var(--brand-face);font-size:26px;text-transform:uppercase;line-height:.95;letter-spacing:.02em}
+.foot-lockup b{display:block;font-family:var(--wordmark);font-weight:400;font-size:34px;text-transform:uppercase;line-height:.9;letter-spacing:.02em}
 .foot-lockup span{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.7}
+/* the rule above is for the subline; the wordmark inside <b> keeps its own face */
+.foot-lockup b .fx-word{font:inherit;letter-spacing:inherit;opacity:1}
 .foot address{font-style:normal;line-height:1.9;opacity:.85}
 .foot address a{display:inline-block;padding:6px 0;min-height:24px}
 .foot-credit a{display:inline-block;padding:5px 0;min-height:24px}
@@ -303,9 +309,9 @@ main>*{pointer-events:auto}
   .nav{display:none}
   .order{padding:9px 13px;font-size:12px}
   .order b{display:none}
-  .lockup-text b{font-size:18px}
+  .lockup-text b{font-size:23px}
   .lockup-text small{font-size:7.5px;letter-spacing:.14em}
-  .mark{width:26px;height:26px}
+  .mark{width:34px;height:34px}
   .eyebrow{top:calc(var(--head-h) + 10px)}
   .eyebrow span:last-child,.eyebrow .sep{display:none}
   .title{font-size:min(var(--fs-m,22vw),120px);top:auto;bottom:auto;translate:none;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:calc(var(--head-h) + 40px) 0 calc(228px + env(safe-area-inset-bottom))}
