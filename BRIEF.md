@@ -10,7 +10,7 @@ their Facebook page, a photo of their own wall or menu board).
 | Fact | Value | Source |
 |---|---|---|
 | Name | The Fix Energy & Nutrition Lounge | Google Business listing |
-| Address | 2100 W Lindsey St, Ste 104, Norman, OK 73069 | Google listing; also on their own cup sticker ("2100 W Lindsey Norman, OK") |
+| Address | 2100 W Lindsey St, Ste 104, Norman, OK 73069 | Google listing; their cup sticker ("2100 W Lindsey Norman, OK"); **"104" is on the door in their own Facebook cover photo** |
 | Sits inside | the Red River Credit Corporation building | Google listing ("Located in:") |
 | Category | Health food restaurant / Herbalife nutrition club | Google listing; Facebook "Health Food Store" |
 | Phone | (405) 495-1299 | ⚠️ THIRD-PARTY ONLY — restaurantguru, restaurantji, Yahoo Local all agree. **Their Google profile has no phone on it** (signed-out Maps still offers "Add place's phone number"). Confirm with the owner before this ships as theirs. |
@@ -18,6 +18,14 @@ their Facebook page, a photo of their own wall or menu board).
 | Instagram | [@thefixnorman](https://www.instagram.com/thefixnorman/) — 4,246 followers, 2,124 posts | Instagram profile, 2026-09-15 |
 | Facebook | [/thefixnorman](https://www.facebook.com/thefixnorman/) — 1.7K followers | Facebook page |
 | Website | **none that works.** Their Facebook lists `thefixnorman.business.site`, which returns a Google 404 (Google Business sites were retired in 2024). Their Google profile shows "Add website". | fetched 2026-09-15 |
+
+## Logo
+
+Their Facebook profile picture (500×500, `brand/fb_logo.jpg`): a black disc, **THE FIX** in tall condensed
+caps with one colour per letter — T #FD65C3 pink · H #7ED958 green · E #03C2CB teal · F #FE914C orange ·
+I #8B52FB purple · X #5371FB blue — and ENERGY & NUTRITION in white. Confirmed as the logo by Circle
+2026-09-16. Their Facebook cover (`brand/fb_cover.jpg`) is the storefront sign in the sun with a blue tea,
+now in the photo strip.
 
 ## What they say about themselves (first-party copy, quoted or paraphrased on the page)
 

@@ -87,8 +87,14 @@ now serves this box a bot check — do not try to get past it.
   NOT on their Google profile. It appears three times on the page (header, visit CTA, footer).
   **Confirm it with the owner before sending this to anyone.**
 - ⚠️ **No prices anywhere**, on purpose — see `BRIEF.md`.
-- The lockup mark is our own square-T device, **not their logo file**. Their real wordmark is the blue
-  slab in the storefront photo. Get the vector from the owner before this ships as theirs.
+- **The logo is theirs** (2026-09-16, Circle sent it): their Facebook profile picture, pulled at 500×500 to
+  `brand/fb_logo.jpg` by `verify/fblogo.js`. Black disc, THE FIX one colour per letter —
+  T `#FD65C3` · H `#7ED958` · E `#03C2CB` · F `#FE914C` · I `#8B52FB` · X `#5371FB` (sampled from the file) —
+  ENERGY & NUTRITION in white. On the site: the disc in the header and footer lockups, the favicon and the
+  touch icon (`logopatch.py` masks the white corners off); the wordmarks beside it and the giant footer word
+  are live type in **Bebas Neue** in those six colours, which is what keeps them sharp. The storefront sign
+  (white slab letters, ENERGY AND NUTRITION in blue) is a different mark and is only in the photos.
+  No vector exists yet; 500 px is enough for the web but not for print.
 
 ## Gates passed 2026-09-16 (re-run after the cup and fact-check pass)
 
@@ -101,7 +107,7 @@ now serves this box a bot check — do not try to get past it.
 
 ## Not done / next
 
-- Owner has to confirm: the phone number, the prices, and hand over the real logo vector.
+- Owner has to confirm: the phone number and the prices. A vector of the logo is only needed for print.
 - No ordering integration (the CTA is `tel:` + directions).
 - The green tea (`cutouts/f_green.png`) is cut out and exportable but is only used as a photo; it is the
   sixth cup if a slot is ever wanted.
