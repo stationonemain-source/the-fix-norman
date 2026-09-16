@@ -18,41 +18,36 @@ dead link is the pitch.
 - `photos/raw/` — the 13 Google Business photos at full resolution + `urls.json` + `reviews.txt`. Not in git.
 - `cutouts/` — the working cup cutouts (`f_rainbow`, `f_sunset`, `f_pink`, `f_shake`, `f_sprinkle`,
   `f_green`). Not in git; `export.py` turns them into `site/img`.
-- Scripts: `cuprebuild.py` (the radial-profile rebuild), `mirrorcup.py` (`conefix`, the earlier mirror
-  approach, still used for the three easy cups), `finish.py` (strip a neighbouring cup's sliver, stand the
-  cup upright), `export.py` (cups → `site/img`), `stamp.py` (re-stamp the `?v=` cache-busters),
-  `verify/*.js` (harvesters, screenshots, hit tests).
+- Scripts: `cuts2.py` (BiRefNet + human-seg mattes → `cutouts2/`), `repair.py` (`plain`, `dehand`,
+  `straighten`), `runcuts.py` (rebuilds all six cups), `export.py` (cups → `site/img`), `stamp.py` (re-stamp
+  the `?v=` cache-busters), `verify/*.js` (harvesters, screenshots, `cupshots.js` per-drink, hit tests).
 - Preview: `.claude/launch.json` entry `the-fix` → `python -m http.server 8767` on `site/`.
 
-## The cups — how five real drinks got onto a black stage
+## The cups — v2, 2026-09-16 (Circle: "the hero cups are not clean")
 
-Every cup on the page is **cut out of The Fix's own photograph**. No cup is generated; no image model was
-used anywhere in this build; nothing was paid for. The pipeline, in order of how hard the photo was:
+Every cup on the page is **cut out of The Fix's own photograph**. Nothing generated, nothing paid for.
+`runcuts.py` rebuilds all six from `photos/raw/` + `cutouts2/`; `export.py` writes `site/img`.
 
-1. **`rembg` (u2net, local, free)** mattes the cup. Installed this session with `pip install rembg`
-   (`~/.rembg/models/u2net.onnx`, 176 MB, downloaded once). It is fast — under 2 s for a 3000 px photo —
-   and it **removes the hand on its own** on three of the five (pink, sprinkles, green): the hand is not
-   salient enough to survive. Keep this tool: it replaces the Higgsfield/Kling matte credits entirely.
-2. **`mirrorcup.conefix`** repairs the bites rembg takes out of a straight cup side: fit the side as a
-   line from clean rows, restore the silhouette to it, fill from the nearest real pixel in the same row.
-3. **`cuprebuild.build`** is for the two cups a hand genuinely covers (the two ombré teas in photo g08 —
-   they are being clinked together, one hand each). It rebuilds the cup as a **radial profile of its own
-   pixels**: measure the row profile on the clean half only, median it over ±6 rows, paint both halves from
-   it. Every colour written is that drink's real colour at that height.
-   - Three earlier attempts are worth not repeating. Plain saturation masking called skin "cup" and the
-     silhouette ballooned. Mirroring pixel-for-pixel about the axis left a hard seam at the split row, a
-     squared-off base and stair-stepped edges — all of it obvious at hero size. **Fitting the cup side as a
-     straight line is the load-bearing idea**, and it must be fitted on rows BELOW the lid: the lid flares
-     wider than the body, and a line fitted through it lets a stray saturated pixel widen the silhouette
-     (that is what put a salmon bar across the red cup).
-   - The skin rule that works: skin is the one family that is red-dominant AND weakly saturated
-     (`R>=G>=B and sat<0.55`). Red, orange, blue, green and yellow drinks all clear it.
-4. **`finish.py`** drops the neighbouring cup's sliver out of the lid rows and rotates each cup upright.
-   Both g08 cups were photographed tilted, and a tilted cup floating in a void reads as a mistake.
-
-The sunset and rainbow still carry faint vertical ghosts where the highlight was mirrored; they read as
-condensation. If the owner gives us real product shots, replace `cutouts/f_*.png` and rerun `export.py` —
-nothing else changes.
+1. **`cuts2.py` — BiRefNet (`birefnet-general-lite`) mattes, not u2net.** The v1 u2net mattes bit chunks out
+   of the cup sides, dropped every straw, and left soft edges; BiRefNet keeps the straw and the clear lid
+   with a crisp edge, and on **four of five photos it drops the hand by itself**. `birefnet-general` (full)
+   dies with "bad allocation" on this box — the matte is predicted on a 1400 px copy and resized back up,
+   applied to the full-resolution photo.
+2. **`repair.plain`** for pink, cinnamon, sprinkles, green: the photograph, matted. That is all.
+   The pink photo has a second straw standing in the holder behind the cup; `runcuts.py` keeps only the
+   largest connected piece so it does not float beside the lid.
+3. **`repair.dehand`** for the two clinked ombré teas (g08), which each have a hand on them. The v1 approach
+   repainted the whole body and looked painted. v2 repaints **only the half the hand is on, below the row
+   the hand starts** (25% and 35% of each cut); everything else is the untouched photograph.
+   - Skin detection by colour **failed** — a blown-out knuckle and a highlight on the plastic are the same
+     colour. Do not go back to it. The hand's extent is given by `hand=` and `occ_from=`.
+   - `u2net_human_seg` does not isolate a hand: it returns hand AND cup as one "person holding a thing".
+   - The repaint is the drink's own radial profile from the clean half, median-smoothed over ±6 rows.
+   - The light is one-sided, so a **luminance** gain measured just above the hand carries the brightness
+     across. A per-channel gain turned the red cup orange (G≈50, B≈36 — 20% there is a hue shift).
+   - Both joins are feathered, but only where the photo under the feather is already close in colour;
+     unguarded, the fade let a thumb-tip ghost through.
+   - `straighten()` stands both upright; they were photographed mid-clink.
 
 ## The design
 
@@ -68,6 +63,14 @@ four stacking board cards → the ingredient wall off their menu board → visit
 footer. Same engine contract as The Tower — read `~/tower-nutrition/STATE.md` "Engine facts you must not
 break" before touching `loadout.js`, all of it still applies.
 
+## Fact-check, 2026-09-16
+
+Everything re-verified; `BRIEF.md` → "Fact-check log" has the table and the 12 changes. The one that was
+flat **wrong**: "creatine" in the boosters, from misreading "Cr7" on their board. Also removed a customer's
+false claim that they are the only club still open (The Tower is), a guessed flavour ("watermelon"), a
+per-cup protein figure that belongs to the board, and two invented details about the lounge. Google search
+now serves this box a bot check — do not try to get past it.
+
 ## Claims on the page and where each comes from
 
 - 4.4 / 28 reviews ← Google, 2026-09-15. 4.2K ← Instagram (4,246). "Seven days" ← their own hours.
@@ -75,8 +78,9 @@ break" before touching `loadout.js`, all of it still applies.
 - "The OG nutrition lounge" · "Join the FIX FAM" ← their Instagram bio, verbatim.
 - "Your local caffeine dealer" ← their own storefront window.
 - The board cards and the ingredient wall ← their own menu board photo (g13) and their Facebook intro.
-- The three review quotes ← Google, verbatim, first names as Google shows them.
-- The five drink names are **descriptions of the photographs, not menu items** — no public menu names
+- The three review quotes ← Google, first names as Google shows them; Monica C.'s trimmed with an ellipsis.
+- The five drink names are **descriptions of the photographs, not menu items** ("Cinnamon" is the one that reaches:
+  the photo shows brown flecks, and the HUD says only that plus that a review names the cinnamon roll shake) — no public menu names
   their flavours. The page says flavours rotate and to point at a colour. Only "cinnamon roll" is a real
   name, and it is attributed to the reviews, not to the cup in the picture.
 - ⚠️ **The phone number is third-party.** (405) 495-1299 is on restaurantguru, restaurantji and Yahoo, but
@@ -86,14 +90,14 @@ break" before touching `loadout.js`, all of it still applies.
 - The lockup mark is our own square-T device, **not their logo file**. Their real wordmark is the blue
   slab in the storefront photo. Get the vector from the owner before this ships as theirs.
 
-## Gates passed 2026-09-15
+## Gates passed 2026-09-16 (re-run after the cup and fact-check pass)
 
 - accesslint live audit: **0 violations**.
 - Console/page errors: **none**, desktop 1440×900 and phone 390×844 (Pixel UA, touch).
 - Hit test across the whole page: nothing paints over the copy, every link and button is reachable, and
   **no tap target under 24 px** (the nav links were 19 px tall and were padded).
-- Phone: `scrollWidth` 390, no horizontal overflow; page height 10,211 px.
-- Weight 3.6 MB, cups 390 KB for all five.
+- Phone: `scrollWidth` 390, no horizontal overflow; page height 10,243 px.
+- Every drink screenshotted in place (`verify/cupshots.js`). Cups 435 KB for all five.
 
 ## Not done / next
 
