@@ -144,3 +144,8 @@ Re-verified today, first-party where possible:
 
 13. (audit) The holidays line "They have a habit of being the ones still open" rested on the same false
     "only club still open" claim — now "Holiday hours go up on their Instagram."
+
+
+## Fall menu (2026-09-24)
+
+Eight item names in `#fall` ← their own fall menu card, sent by Circle 2026-09-24 (`brand/fall-menu-2026.webp`). Verbatim; nothing added.

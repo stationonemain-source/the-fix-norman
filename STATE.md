@@ -146,6 +146,17 @@ pinned inside. The drink arrows were squeezed to 27 px ovals → `flex:none`. Su
 - Every drink screenshotted in place at 1920, 390 and 360 (`verify/cupshots.js`) and inspected at 100%.
 - No horizontal overflow at 360, 390, 430, 1440, 1920; no tap target under 24 px; no console errors.
 
+## Fall menu — added 2026-09-24
+
+Circle sent their fall menu card (peach gingham, brown ink). New section `#fall` between the board and
+Visit, plus a "Fall menu" nav link. **Teas:** Caramel Apple, Hocus Pocus, Harvest Moon, Wicked Witch.
+**Shakes:** Pumpkin Spice, Pumpkin Pie, Pumpkin Spice Teddy Graham, Pumpkin Peanut Butter Cookie — copied
+exactly off the card, no descriptions or prices added. The card itself is `site/img/p/fall(-s).webp`
+(original in `brand/fall-menu-2026.webp`), shown as a thumbnail that opens full size. The section is styled
+after the card: peach gingham, dashed brown border, ink `#6B1D0C`. These are the first **real flavour names**
+on the site. When the season ends, delete the `#fall` section and its nav link.
+`verify/fallshot.js [port]` screenshots it at 1440/1920/390/360 and reports overflow, tiny text, tap targets.
+
 ## Not done / next
 
 - Owner has to confirm: the phone number and the prices. A vector of the logo is only needed for print.
